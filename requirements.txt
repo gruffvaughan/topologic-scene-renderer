@@ -1,3 +1,3 @@
 topologicpy
-tkinter
+tk
 ffpmeg
