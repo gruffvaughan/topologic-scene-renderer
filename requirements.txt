@@ -1,3 +1,4 @@
 topologicpy
 tk
 pillow
+euclid3 #required for Roof shape

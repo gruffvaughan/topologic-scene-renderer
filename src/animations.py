@@ -21,6 +21,7 @@ def twist_animation(t):
 
 def hyperboloid_animation(t):
     angle = t * 360
+
     c = Cell.Hyperboloid(
         origin=Vertex.Origin(),
         baseRadius=3,
@@ -45,7 +46,7 @@ def cone_animation(t):
         direction=[0, 0, 1],
         placement="top",
     )
-    return c, Cell.Prism(width=2, length=2, height=10)
+    return c, Cell.Prism(width=2, length=2, height=15)
 
 
 def rotated_cell_complex_animation(t):

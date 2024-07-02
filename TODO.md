@@ -1,18 +1,17 @@
-### TO DO
+### TO FIX
 
 - UI disable/enable on correct elements
-
-### New features?
-
-- Add image type to image sequence settings (PNG, JPEG)
-- Select multiple shapes to render at once?
+- Progress bar no longer working
 
 ### Known Bugs
+
+_Hyperboloid_
+
+This animation returns to its original state when it shouldn't.
 
 _Roof_
 
 ```
-Polyskel - ERROR: Could not import euclid3.
-Exception occurred: name 'Point2' is not defined
-name 'Point2' is not defined
+Cell.ByFaces - Error: The operation failed. Returning None.
+Cell.Roof - Error: Could not create a roof cell. Returning None.
 ```

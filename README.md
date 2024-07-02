@@ -14,7 +14,11 @@ The topologicpy Animation Renderer is a python application that allows you to ex
 
 ⚠️ Ensure that your Python environment is 3.11, as 3.12+ is not supported by `topologicpy`
 
-⚠️ Ensure that you downgrade `kaleido` (required by Plotly) to version 0.1.0post1 otherwise the script locks in an endless loop
+⚠️ Ensure that you downgrade `kaleido` (required by Plotly) to version 0.1.0post1 otherwise the script [locks in an endless loop](https://github.com/plotly/Kaleido/issues/110)
+
+```
+ pip install --upgrade "kaleido==0.1.*"
+```
 
 ## Installation
 

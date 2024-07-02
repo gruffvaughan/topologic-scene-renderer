@@ -52,7 +52,7 @@ def load_preferences(root):
         "video_width": 1080,
         "video_height": 1080,
         "face_opacity_start": 0.75,
-        "face_opacity_end": 0.1,
+        "face_opacity_end": 0.10,
         "face_color": "128, 255, 255",
         "edge_color": "0, 0, 0",
         "edge_opacity": 1.0,
@@ -96,21 +96,25 @@ def load_preferences(root):
     root.bg_color_var.set(preferences["bg_color"])
     root.bg_opacity_var.set(preferences["bg_opacity"])
 
-    root.face_color_rgb_label.config(text=f"RGB: {root.face_color_var.get()}")
-    root.face_color_hex_label.config(
+    root.face_color_rgb_label.configure(text=f"RGB: {root.face_color_var.get()}")
+    root.face_color_hex_label.configure(
         text=f"HEX: {rgb_to_hex(root.face_color_var.get())}"
     )
-    root.face_color_sample_box.config(bg=rgb_to_hex(root.face_color_var.get()))
-    root.edge_color_rgb_label.config(text=f"RGB: {root.edge_color_var.get()}")
-    root.edge_color_hex_label.config(
+    root.face_color_sample_box.configure(fg_color=rgb_to_hex(root.face_color_var.get()))
+    root.edge_color_rgb_label.configure(text=f"RGB: {root.edge_color_var.get()}")
+    root.edge_color_hex_label.configure(
         text=f"HEX: {rgb_to_hex(root.edge_color_var.get())}"
     )
-    root.edge_color_sample_box.config(bg=rgb_to_hex(root.edge_color_var.get()))
-    root.vertex_color_rgb_label.config(text=f"RGB: {root.vertex_color_var.get()}")
-    root.vertex_color_hex_label.config(
+    root.edge_color_sample_box.configure(fg_color=rgb_to_hex(root.edge_color_var.get()))
+    root.vertex_color_rgb_label.configure(text=f"RGB: {root.vertex_color_var.get()}")
+    root.vertex_color_hex_label.configure(
         text=f"HEX: {rgb_to_hex(root.vertex_color_var.get())}"
     )
-    root.vertex_color_sample_box.config(bg=rgb_to_hex(root.vertex_color_var.get()))
-    root.bg_color_rgb_label.config(text=f"RGB: {root.bg_color_var.get()}")
-    root.bg_color_hex_label.config(text=f"HEX: {rgb_to_hex(root.bg_color_var.get())}")
-    root.bg_color_sample_box.config(bg=rgb_to_hex(root.bg_color_var.get()))
+    root.vertex_color_sample_box.configure(
+        fg_color=rgb_to_hex(root.vertex_color_var.get())
+    )
+    root.bg_color_rgb_label.configure(text=f"RGB: {root.bg_color_var.get()}")
+    root.bg_color_hex_label.configure(
+        text=f"HEX: {rgb_to_hex(root.bg_color_var.get())}"
+    )
+    root.bg_color_sample_box.configure(fg_color=rgb_to_hex(root.bg_color_var.get()))

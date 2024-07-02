@@ -1,6 +1,7 @@
 import threading
+
+import customtkinter as ctk
 import tkinter as tk
-from tkinter import filedialog
 from PIL import Image, ImageTk
 
 from src.animations import animation_functions
@@ -11,27 +12,27 @@ from src.preferences import save_preferences, load_preferences
 from src.ui.layout import create_layout, enable_ui, disable_ui
 
 
-class MainWindow(tk.Tk):
+class MainWindow(ctk.CTk):
     def __init__(self):
         super().__init__()
-        self.cancel_render = False  # Flag to control rendering cancellation
-        self.title("topologicpy Animation Renderer")
-        self.geometry("740x1140")
+        ctk.set_appearance_mode("dark")
+        ctk.set_default_color_theme("blue")
 
-        favicon = Image.open("src/ui/images/icon.png")
-        self.icon = ImageTk.PhotoImage(favicon)
-        self.iconphoto(True, self.icon)
+        self.cancel_render = False  # Flag to control rendering cancellation
+        self.title("topologicpy Scene Renderer")
+        self.geometry("700x1180+2140+0")
+        self.iconbitmap("src/ui/images/icon.ico")
 
         create_layout(self)
         load_preferences(self)
 
     def select_output_folder(self):
-        self.output_folder = filedialog.askdirectory()
+        self.output_folder = ctk.filedialog.askdirectory()
         self.output_folder_var.set(self.output_folder)
         save_preferences(self)
 
     def select_video_folder(self):
-        self.video_folder = filedialog.askdirectory()
+        self.video_folder = ctk.filedialog.askdirectory()
         self.video_folder_var.set(self.video_folder)
         save_preferences(self)
 
@@ -147,18 +148,18 @@ class MainWindow(tk.Tk):
         selected_animation,
     ):
         disable_ui(self)  # Disable UI at the start of rendering
-        self.cancel_button.config(state="normal")  # Enable the cancel button
-        self.status_label.config(state="normal")
+        self.cancel_button.configure(state="normal")  # Enable the cancel button
+        self.status_label.configure(state="normal")
 
         # Call render_frames with a callback to update_progress
         def update_progress(frame_number):
             self.progress["value"] = (frame_number / total_frames) * 100
             self.update_idletasks()  # Make sure UI updates
             if self.cancel_render:
-                self.status_label.config(text="Render cancelled.")
+                self.status_label.configure(text="Render cancelled.")
                 self.progress["value"] = 0
                 return False  # Indicate that rendering should be stopped
-            self.status_label.config(
+            self.status_label.configure(
                 text=f"Rendering frame {frame_number}/{total_frames}"
             )
             return True
@@ -190,14 +191,14 @@ class MainWindow(tk.Tk):
             if not render_result:
                 print("Rendering cancelled")
                 enable_ui(self)  # Re-enable UI after rendering is cancelled
-                self.cancel_button.config(state="disabled")
+                self.cancel_button.configure(state="disabled")
                 self.progress["value"] = 0
-                self.status_label.config(state="disabled")
+                self.status_label.configure(state="disabled")
                 self.cancel_render = False  # Reset the cancel flag
                 return  # Exit as the render was cancelled
 
             if render_video:
-                self.status_label.config(text="Saving video file...")
+                self.status_label.configure(text="Saving video file...")
                 create_video_from_images(
                     folder,
                     video_folder,
@@ -210,26 +211,28 @@ class MainWindow(tk.Tk):
                     video_format,
                     selected_animation,
                 )
-                self.status_label.config(text="Video file has been saved successfully.")
+                self.status_label.configure(
+                    text="Video file has been saved successfully."
+                )
             else:
                 print("Rendering completed without creating video")
-                self.status_label.config(
+                self.status_label.configure(
                     text="Image sequence has been rendered successfully."
                 )
         except Exception as e:
             print(f"Exception occurred: {str(e)}")
-            self.status_label.config(text=f"An error occurred: {str(e)}")
+            self.status_label.configure(text=f"An error occurred: {str(e)}")
             print(e)
 
         finally:
             enable_ui(self)  # Re-enable UI after rendering is complete
-            self.cancel_button.config(state="disabled")
-            self.status_label.config(state="disabled")
+            self.cancel_button.configure(state="disabled")
+            self.status_label.configure(state="disabled")
             self.cancel_render = False  # Reset the cancel flag
 
     def cancel_rendering(self):
         self.cancel_render = True  # Set the flag to cancel rendering
-        self.status_label.config(text="Cancellation requested. Please wait...")
+        self.status_label.configure(text="Cancellation requested. Please wait...")
 
 
 if __name__ == "__main__":

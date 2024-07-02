@@ -1,5 +1,4 @@
-import tkinter as tk
-from tkinter import ttk
+import customtkinter as ctk
 from PIL import Image, ImageTk
 
 from src.utils import select_color, rgb_to_hex, disableChildren, enableChildren
@@ -10,79 +9,111 @@ from src.easing import easing_functions
 def create_layout(root):
     ############################################ HEADER
 
-    frame_header = ttk.Frame(root)
+    frame_header = ctk.CTkFrame(root, fg_color="transparent")
     frame_header.pack(pady=(10, 10))
 
-    original_image = Image.open("src/ui/images/topologicpy-logo.png")
-    resized_image = original_image.resize((80, 80))
-    root.logo_image = ImageTk.PhotoImage(resized_image)
-    root.logo_label = ttk.Label(frame_header, image=root.logo_image)
-    root.logo_label.pack(side=tk.LEFT, padx=(0, 10))
+    light_image = Image.open("src/ui/images/topologicpy-logo.png")
+    dark_image = Image.open("src/ui/images/topologicpy-logo-dark.png")
+    root.logo_image = ctk.CTkImage(
+        light_image=light_image, dark_image=dark_image, size=(80, 80)
+    )
+    root.logo_label = ctk.CTkLabel(
+        frame_header, image=root.logo_image, text="", compound="left"
+    )
+    root.logo_label.pack(side=ctk.LEFT, padx=(0, 10))
 
-    ttk.Label(
+    ctk.CTkLabel(
         frame_header,
-        text="TopologicPy\nAnimation\nRenderer",
+        text="topologicpy\nScene\nRenderer",
         font=("TkDefaultFont", 16, "bold"),
-    ).pack(side=tk.LEFT)
-    ttk.Separator(root, orient="horizontal").pack(fill="x", pady=5)
+        justify="left",
+        height=80,
+        anchor="center",
+    ).pack()
 
     ################################ ANIMATION SETTINGS #################################
 
-    root.frame_dropdowns = ttk.Frame(root)
+    ctk.CTkLabel(root, text="Scene Settings", font=("", 14, "bold")).pack(pady=(20, 0))
+
+    root.frame_dropdowns = ctk.CTkFrame(root, fg_color="transparent")
     root.frame_dropdowns.pack(pady=(10, 10))
 
-    frame_shape = ttk.Frame(root.frame_dropdowns)
-    frame_shape.pack(side=tk.LEFT, pady=(0, 10), padx=(0, 20))
+    frame_shape = ctk.CTkFrame(root.frame_dropdowns)
+    frame_shape.pack(side=ctk.LEFT, pady=(0, 5), padx=(0, 20))
 
-    frame_easing = ttk.Frame(root.frame_dropdowns)
-    frame_easing.pack(side=tk.LEFT, pady=(0, 10), padx=(0, 0))
+    frame_easing = ctk.CTkFrame(root.frame_dropdowns)
+    frame_easing.pack(side=ctk.LEFT, pady=(0, 5), padx=(0, 0))
 
-    animation_label = ttk.Label(frame_shape, text="Select Shape")
+    animation_label = ctk.CTkLabel(
+        frame_shape, text="Select Shape", fg_color="transparent"
+    )
     animation_label.pack()
-    root.animation_var = tk.StringVar(root)
-    root.animation_dropdown = ttk.Combobox(
+    root.animation_var = ctk.StringVar(root)
+    root.animation_dropdown = ctk.CTkComboBox(
         frame_shape,
-        textvariable=root.animation_var,
+        variable=root.animation_var,
         values=list(animation_functions.keys()),
+        width=300,
     )
     root.animation_dropdown.pack()
 
-    easing_label = ttk.Label(frame_easing, text="Select Easing")
+    easing_label = ctk.CTkLabel(
+        frame_easing, text="Select Easing", fg_color="transparent"
+    )
     easing_label.pack()
-    root.easing_var = tk.StringVar(root)
-    root.easing_dropdown = ttk.Combobox(
-        frame_easing, textvariable=root.easing_var, values=list(easing_functions.keys())
+    root.easing_var = ctk.StringVar(root)
+    root.easing_dropdown = ctk.CTkComboBox(
+        frame_easing,
+        variable=root.easing_var,
+        values=list(easing_functions.keys()),
+        width=300,
     )
     root.easing_dropdown.pack()
 
-    root.frame_styles = ttk.Frame(root)
-    root.frame_styles.pack(fill="both", expand=True, padx=20, pady=20)
+    root.frame_styles = ctk.CTkFrame(root, fg_color="transparent")
+    root.frame_styles.pack(fill="both", padx=20, pady=(10, 0))
 
-    box1 = ttk.LabelFrame(root.frame_styles, text="FACES")
-    box1.pack(side="left", fill="both", padx=10)
+    # FACES
+    box1 = ctk.CTkFrame(root.frame_styles)
+    box1.pack(side="left", fill="both", padx=10, pady=0)
 
-    face_opacity_start_label = ttk.Label(box1, text="Opacity Start")
-    face_opacity_start_label.pack()
-    root.face_opacity_start_var = tk.DoubleVar(root, value=0.75)
-    ttk.Entry(box1, textvariable=root.face_opacity_start_var).pack(
-        pady=5, padx=10, fill="x"
+    ctk.CTkLabel(
+        box1,
+        text="FACES",
+        text_color="#808080",
+        justify="center",
+        fg_color="transparent",
+    ).grid(column=0, row=0, columnspan=2, pady=(0, 0))
+
+    ctk.CTkLabel(
+        box1, pady=3, text="Opacity\nStart", justify="center", font=("", 12)
+    ).grid(column=0, row=1)
+    ctk.CTkLabel(
+        box1, pady=3, text="Opacity\nEnd", justify="center", font=("", 12)
+    ).grid(column=1, row=1)
+    root.face_opacity_start_var = ctk.DoubleVar(root, value=0.75)
+    ctk.CTkEntry(
+        box1, width=60, justify="center", textvariable=root.face_opacity_start_var
+    ).grid(column=0, row=2, pady=(0, 10), padx=(10, 0))
+    root.face_opacity_end_var = ctk.DoubleVar(root, value=0.10)
+    ctk.CTkEntry(
+        box1, width=60, justify="center", textvariable=root.face_opacity_end_var
+    ).grid(column=1, row=2, pady=(0, 10), padx=(5, 10))
+
+    frame_colorpicker1 = ctk.CTkFrame(box1)
+    frame_colorpicker1.grid(
+        column=0, row=3, columnspan=2, sticky="ew", padx=10, pady=(0, 10)
     )
+    frame_colorpicker1.grid_columnconfigure(1, weight=1)
 
-    face_opacity_end_label = ttk.Label(box1, text="Opacity End")
-    face_opacity_end_label.pack()
-    root.face_opacity_end_var = tk.DoubleVar(root, value=0.1)
-    ttk.Entry(box1, textvariable=root.face_opacity_end_var).pack(
-        pady=5, padx=10, fill="x"
+    root.face_color_sample_box = ctk.CTkFrame(
+        frame_colorpicker1, width=22, height=22, border_width=1
     )
+    root.face_color_sample_box.grid(column=0, row=0)
 
-    frame_colorpicker = ttk.Frame(box1)
-    root.face_color_sample_box = tk.Frame(
-        frame_colorpicker, width=22, height=22, relief="solid", borderwidth=1
-    )
-    root.face_color_sample_box.pack(side=tk.LEFT)
-    root.face_color_var = tk.StringVar(root, value="0, 0, 0")
-    face_color_button = tk.Button(
-        frame_colorpicker,
+    root.face_color_var = ctk.StringVar(root, value="0, 0, 0")
+    ctk.CTkButton(
+        frame_colorpicker1,
         text="Change Colour",
         command=lambda: select_color(
             root.face_color_sample_box,
@@ -90,42 +121,62 @@ def create_layout(root):
             root.face_color_hex_label,
             root.face_color_var,
         ),
+        height=15,
+        width=20,
+    ).grid(column=1, row=0, sticky="ew")
+
+    root.face_color_rgb_label = ctk.CTkLabel(
+        box1, text="RGB: ", text_color="#808080", anchor="w", height=3
     )
-    face_color_button.pack(side=tk.LEFT, fill="x")
-    frame_colorpicker.pack(pady=(10, 10))
-
-    root.face_color_rgb_label = tk.Label(box1, text="RGB: ")
-    root.face_color_rgb_label.pack()
-    root.face_color_hex_label = tk.Label(box1, text="HEX: ")
-    root.face_color_hex_label.pack()
-
-    root.face_color_rgb_label.config(text=f"RGB: {root.face_color_var.get()}")
-    root.face_color_hex_label.config(
-        text=f"HEX: {rgb_to_hex(root.face_color_var.get())}"
+    root.face_color_rgb_label.grid(column=0, row=4, columnspan=2, sticky="w", padx=10)
+    root.face_color_hex_label = ctk.CTkLabel(
+        box1, text="HEX: ", text_color="#808080", anchor="w", height=3
     )
-    root.face_color_sample_box.config(bg=rgb_to_hex(root.face_color_var.get()))
+    root.face_color_hex_label.grid(
+        column=0, row=5, columnspan=2, sticky="w", padx=10, pady=(0, 10)
+    )
 
-    box2 = ttk.LabelFrame(root.frame_styles, text="EDGES")
+    # EDGES
+    box2 = ctk.CTkFrame(root.frame_styles)
     box2.pack(side="left", fill="both", padx=10)
 
-    edge_opacity_label = ttk.Label(box2, text="Opacity")
-    edge_opacity_label.pack()
-    root.edge_opacity_var = tk.DoubleVar(root, value=1)
-    ttk.Entry(box2, textvariable=root.edge_opacity_var).pack(pady=5, padx=10, fill="x")
+    ctk.CTkLabel(
+        box2,
+        text="EDGES",
+        text_color="#808080",
+        justify="center",
+        fg_color="transparent",
+    ).grid(column=0, row=0, columnspan=2, pady=(0, 5))
 
-    edge_width_label = ttk.Label(box2, text="Width")
-    edge_width_label.pack()
-    root.edge_width_var = tk.IntVar(root, value=2)
-    ttk.Entry(box2, textvariable=root.edge_width_var).pack(pady=5, padx=10, fill="x")
-
-    frame_colorpicker = ttk.Frame(box2)
-    root.edge_color_sample_box = tk.Frame(
-        frame_colorpicker, width=22, height=22, relief="solid", borderwidth=1
+    ctk.CTkLabel(box2, text="Opacity", justify="center", font=("", 12)).grid(
+        column=0, row=1
     )
-    root.edge_color_sample_box.pack(side=tk.LEFT)
-    root.edge_color_var = tk.StringVar(root, value="0, 0, 0")
-    edge_color_button = tk.Button(
-        frame_colorpicker,
+    ctk.CTkLabel(box2, text="Width", justify="center", font=("", 12)).grid(
+        column=1, row=1
+    )
+    root.edge_opacity_var = ctk.DoubleVar(root, value=1.0)
+    ctk.CTkEntry(
+        box2, width=60, justify="center", textvariable=root.edge_opacity_var
+    ).grid(column=0, row=2, pady=(0, 10), padx=(10, 5))
+    root.edge_width_var = ctk.DoubleVar(root, value=2)
+    ctk.CTkEntry(
+        box2, width=60, justify="center", textvariable=root.edge_width_var
+    ).grid(column=1, row=2, pady=(0, 10), padx=(5, 10))
+
+    frame_colorpicker2 = ctk.CTkFrame(box2)
+    frame_colorpicker2.grid(
+        column=0, row=3, columnspan=2, sticky="ew", padx=10, pady=(0, 10)
+    )
+    frame_colorpicker2.grid_columnconfigure(1, weight=1)
+
+    root.edge_color_sample_box = ctk.CTkFrame(
+        frame_colorpicker2, width=22, height=22, border_width=1
+    )
+    root.edge_color_sample_box.grid(column=0, row=0)
+
+    root.edge_color_var = ctk.StringVar(root, value="0, 0, 0")
+    ctk.CTkButton(
+        frame_colorpicker2,
         text="Change Colour",
         command=lambda: select_color(
             root.edge_color_sample_box,
@@ -133,39 +184,55 @@ def create_layout(root):
             root.edge_color_hex_label,
             root.edge_color_var,
         ),
+        height=15,
+        width=20,
+    ).grid(column=1, row=0, sticky="ew")
+
+    root.edge_color_rgb_label = ctk.CTkLabel(
+        box2, text="RGB: ", text_color="#808080", anchor="w", height=3
     )
-    edge_color_button.pack(side=tk.LEFT, fill="x")
-    frame_colorpicker.pack(pady=(10, 10))
-
-    root.edge_color_rgb_label = tk.Label(box2, text="RGB: ")
-    root.edge_color_rgb_label.pack()
-    root.edge_color_hex_label = tk.Label(box2, text="HEX: ")
-    root.edge_color_hex_label.pack()
-
-    root.edge_color_rgb_label.config(text=f"RGB: {root.edge_color_var.get()}")
-    root.edge_color_hex_label.config(
-        text=f"HEX: {rgb_to_hex(root.edge_color_var.get())}"
+    root.edge_color_rgb_label.grid(column=0, row=4, columnspan=2, sticky="w", padx=10)
+    root.edge_color_hex_label = ctk.CTkLabel(
+        box2, text="HEX: ", text_color="#808080", anchor="w", height=3
     )
-    root.edge_color_sample_box.config(bg=rgb_to_hex(root.edge_color_var.get()))
+    root.edge_color_hex_label.grid(
+        column=0, row=5, columnspan=2, sticky="w", padx=10, pady=(0, 10)
+    )
 
-    box3 = ttk.LabelFrame(root.frame_styles, text="VERTICES")
+    # VERTICES
+    box3 = ctk.CTkFrame(root.frame_styles)
     box3.pack(side="left", fill="both", padx=10)
 
-    vertex_opacity_label = ttk.Label(box3, text="Opacity")
-    vertex_opacity_label.pack()
-    root.vertex_opacity_var = tk.DoubleVar(root, value=1)
-    ttk.Entry(box3, textvariable=root.vertex_opacity_var).pack(
-        pady=5, padx=10, fill="x"
-    )
+    ctk.CTkLabel(
+        box3,
+        text="VERTICES",
+        text_color="#808080",
+        justify="center",
+        fg_color="transparent",
+    ).grid(column=0, row=0, columnspan=2, pady=(0, 5))
 
-    frame_colorpicker = ttk.Frame(box3)
-    root.vertex_color_sample_box = tk.Frame(
-        frame_colorpicker, width=22, height=22, relief="solid", borderwidth=1
+    ctk.CTkLabel(box3, text="Opacity", justify="center", font=("", 12)).grid(
+        column=0, row=1, columnspan=2
     )
-    root.vertex_color_sample_box.pack(side=tk.LEFT)
-    root.vertex_color_var = tk.StringVar(root, value="255, 255, 255")
-    vertex_color_button = tk.Button(
-        frame_colorpicker,
+    root.vertex_opacity_var = ctk.DoubleVar(root, value=1.0)
+    ctk.CTkEntry(
+        box3, width=60, justify="center", textvariable=root.vertex_opacity_var
+    ).grid(column=0, row=2, columnspan=2, pady=(0, 10), padx=(10, 5))
+
+    frame_colorpicker3 = ctk.CTkFrame(box3)
+    frame_colorpicker3.grid(
+        column=0, row=3, columnspan=2, sticky="ew", padx=10, pady=(0, 10)
+    )
+    frame_colorpicker3.grid_columnconfigure(1, weight=1)
+
+    root.vertex_color_sample_box = ctk.CTkFrame(
+        frame_colorpicker3, width=22, height=22, border_width=1
+    )
+    root.vertex_color_sample_box.grid(column=0, row=0)
+
+    root.vertex_color_var = ctk.StringVar(root, value="0, 0, 0")
+    ctk.CTkButton(
+        frame_colorpicker3,
         text="Change Colour",
         command=lambda: select_color(
             root.vertex_color_sample_box,
@@ -173,37 +240,55 @@ def create_layout(root):
             root.vertex_color_hex_label,
             root.vertex_color_var,
         ),
+        height=15,
+        width=20,
+    ).grid(column=1, row=0, sticky="ew")
+
+    root.vertex_color_rgb_label = ctk.CTkLabel(
+        box3, text="RGB: ", text_color="#808080", anchor="w", height=3
     )
-    vertex_color_button.pack(side=tk.LEFT, fill="x")
-    frame_colorpicker.pack(pady=(10, 10))
-
-    root.vertex_color_rgb_label = tk.Label(box3, text="RGB: ")
-    root.vertex_color_rgb_label.pack()
-    root.vertex_color_hex_label = tk.Label(box3, text="HEX: ")
-    root.vertex_color_hex_label.pack()
-
-    root.vertex_color_rgb_label.config(text=f"RGB: {root.vertex_color_var.get()}")
-    root.vertex_color_hex_label.config(
-        text=f"HEX: {rgb_to_hex(root.vertex_color_var.get())}"
+    root.vertex_color_rgb_label.grid(column=0, row=4, columnspan=2, sticky="w", padx=10)
+    root.vertex_color_hex_label = ctk.CTkLabel(
+        box3, text="HEX: ", text_color="#808080", anchor="w", height=3
     )
-    root.vertex_color_sample_box.config(bg=rgb_to_hex(root.vertex_color_var.get()))
+    root.vertex_color_hex_label.grid(
+        column=0, row=5, columnspan=2, sticky="w", padx=10, pady=(0, 10)
+    )
 
-    box4 = ttk.LabelFrame(root.frame_styles, text="BACKGROUND")
+    # BACKGROUND
+    box4 = ctk.CTkFrame(root.frame_styles)
     box4.pack(side="left", fill="both", padx=10)
 
-    bg_opacity_label = ttk.Label(box4, text="Opacity")
-    bg_opacity_label.pack()
-    root.bg_opacity_var = tk.DoubleVar(root, value=1)
-    ttk.Entry(box4, textvariable=root.bg_opacity_var).pack(pady=5, padx=10, fill="x")
+    ctk.CTkLabel(
+        box4,
+        text="BACKGROUND",
+        text_color="#808080",
+        justify="center",
+        fg_color="transparent",
+    ).grid(column=0, row=0, columnspan=2, pady=(0, 5))
 
-    frame_colorpicker = ttk.Frame(box4)
-    root.bg_color_sample_box = tk.Frame(
-        frame_colorpicker, width=22, height=22, relief="solid", borderwidth=1
+    ctk.CTkLabel(box4, text="Opacity", justify="center", font=("", 12)).grid(
+        column=0, row=1, columnspan=2
     )
-    root.bg_color_sample_box.pack(side=tk.LEFT)
-    root.bg_color_var = tk.StringVar(root, value="255, 255, 255")
-    bg_color_button = tk.Button(
-        frame_colorpicker,
+    root.bg_opacity_var = ctk.DoubleVar(root, value=1.0)
+    ctk.CTkEntry(
+        box4, width=60, justify="center", textvariable=root.bg_opacity_var
+    ).grid(column=0, row=2, columnspan=2, pady=(0, 10), padx=(10, 5))
+
+    frame_colorpicker4 = ctk.CTkFrame(box4)
+    frame_colorpicker4.grid(
+        column=0, row=3, columnspan=2, sticky="ew", padx=10, pady=(0, 10)
+    )
+    frame_colorpicker4.grid_columnconfigure(1, weight=1)
+
+    root.bg_color_sample_box = ctk.CTkFrame(
+        frame_colorpicker4, width=22, height=22, border_width=1
+    )
+    root.bg_color_sample_box.grid(column=0, row=0)
+
+    root.bg_color_var = ctk.StringVar(root, value="0, 0, 0")
+    ctk.CTkButton(
+        frame_colorpicker4,
         text="Change Colour",
         command=lambda: select_color(
             root.bg_color_sample_box,
@@ -211,198 +296,223 @@ def create_layout(root):
             root.bg_color_hex_label,
             root.bg_color_var,
         ),
+        height=15,
+        width=20,
+    ).grid(column=1, row=0, sticky="ew")
+
+    root.bg_color_rgb_label = ctk.CTkLabel(
+        box4, text="RGB: ", text_color="#808080", anchor="w", height=3
     )
-    bg_color_button.pack(side=tk.LEFT, fill="x")
-    frame_colorpicker.pack(pady=(10, 10))
-
-    root.bg_color_rgb_label = tk.Label(box4, text="RGB: ")
-    root.bg_color_rgb_label.pack()
-    root.bg_color_hex_label = tk.Label(box4, text="HEX: ")
-    root.bg_color_hex_label.pack()
-
-    root.bg_color_rgb_label.config(text=f"RGB: {root.bg_color_var.get()}")
-    root.bg_color_hex_label.config(text=f"HEX: {rgb_to_hex(root.bg_color_var.get())}")
-    root.bg_color_sample_box.config(bg=rgb_to_hex(root.bg_color_var.get()))
+    root.bg_color_rgb_label.grid(column=0, row=4, columnspan=2, sticky="w", padx=10)
+    root.bg_color_hex_label = ctk.CTkLabel(
+        box4, text="HEX: ", text_color="#808080", anchor="w", height=3
+    )
+    root.bg_color_hex_label.grid(
+        column=0, row=5, columnspan=2, sticky="w", padx=10, pady=(0, 10)
+    )
 
     ##################################### SEQUENCE SETTINGS #################################
 
-    ttk.Label(root, text="Sequence Settings", font=("TkDefaultFont", 12, "bold")).pack(
+    ctk.CTkLabel(root, text="Sequence Settings", font=("", 14, "bold")).pack(
         pady=(20, 5)
     )
-    ttk.Separator(root, orient="horizontal").pack(fill="x", pady=5)
 
-    root.frame_settings = ttk.Frame(root)
-    root.frame_settings.pack(pady=20)
+    root.frame_settings = ctk.CTkFrame(root)
+    root.frame_settings.pack(pady=(0, 0))
 
     # Sequence Name Entry
-    filename_prefix_label = ttk.Label(root.frame_settings, text="File Name Prefix")
+    filename_prefix_label = ctk.CTkLabel(
+        root.frame_settings, text="File Name Prefix (Optional)", font=("", 12)
+    )
     filename_prefix_label.pack()
-    root.filename_prefix_var = tk.StringVar(root)
-    root.filename_prefix_entry = ttk.Entry(
+    root.filename_prefix_var = ctk.StringVar(root)
+    root.filename_prefix_entry = ctk.CTkEntry(
         root.frame_settings,
         textvariable=root.filename_prefix_var,
-        width=30,
+        width=220,
         justify="center",
     )
-    root.filename_prefix_entry.pack(pady=(0, 10))
+    root.filename_prefix_entry.pack(pady=(0, 10), padx=30)
 
-    image_size_label = ttk.Label(
-        root.frame_settings, text="Topologic Export Size (w x h):"
+    image_size_label = ctk.CTkLabel(
+        root.frame_settings, text="Topologic Export Size (w x h):", font=("", 12)
     )
     image_size_label.pack()
 
-    image_size_frame = ttk.Frame(root.frame_settings)
+    image_size_frame = ctk.CTkFrame(root.frame_settings, fg_color="transparent")
     image_size_frame.pack(pady=(0, 10))
 
-    root.image_width_var = tk.IntVar(root, value=3840)
-    root.image_width_entry = ttk.Entry(
-        image_size_frame, textvariable=root.image_width_var, width=10
+    root.image_width_var = ctk.IntVar(root, value=3840)
+    root.image_width_entry = ctk.CTkEntry(
+        image_size_frame, textvariable=root.image_width_var, width=100, justify="center"
     )
-    root.image_width_entry.pack(side=tk.LEFT)
-    ttk.Label(image_size_frame, text="x").pack(side=tk.LEFT, padx=5)
-    root.image_height_var = tk.IntVar(root, value=2160)
-    root.image_height_entry = ttk.Entry(
-        image_size_frame, textvariable=root.image_height_var, width=10
+    root.image_width_entry.pack(side=ctk.LEFT)
+    ctk.CTkLabel(image_size_frame, text="x").pack(side=ctk.LEFT, padx=5)
+    root.image_height_var = ctk.IntVar(root, value=2160)
+    root.image_height_entry = ctk.CTkEntry(
+        image_size_frame,
+        textvariable=root.image_height_var,
+        width=100,
+        justify="center",
     )
-    root.image_height_entry.pack(side=tk.LEFT)
+    root.image_height_entry.pack(side=ctk.LEFT)
 
-    checkboxes_frame = ttk.Frame(root.frame_settings)
+    checkboxes_frame = ctk.CTkFrame(root.frame_settings, fg_color="transparent")
     checkboxes_frame.pack(pady=(0, 10))
 
-    root.render_video_var = tk.BooleanVar(checkboxes_frame, value=True)
-    root.render_video_checkbox = ttk.Checkbutton(
-        checkboxes_frame, text="Render Video?", variable=root.render_video_var
+    root.render_video_var = ctk.BooleanVar(checkboxes_frame, value=True)
+    root.render_video_checkbox = ctk.CTkCheckBox(
+        checkboxes_frame,
+        text="Render Video?",
+        font=("", 12),
+        variable=root.render_video_var,
     )
-    root.render_video_checkbox.pack(side=tk.LEFT, padx=10)
+    root.render_video_checkbox.pack(side=ctk.LEFT, padx=10)
 
-    root.render_reverse_var = tk.BooleanVar(checkboxes_frame, value=True)
-    root.render_reverse_checkbox = ttk.Checkbutton(
-        checkboxes_frame, text="Render w/ Reverse?", variable=root.render_reverse_var
+    root.render_reverse_var = ctk.BooleanVar(checkboxes_frame, value=True)
+    root.render_reverse_checkbox = ctk.CTkCheckBox(
+        checkboxes_frame,
+        text="Render w/ Reverse?",
+        font=("", 12),
+        variable=root.render_reverse_var,
     )
-    root.render_reverse_checkbox.pack(side=tk.LEFT, padx=10)
+    root.render_reverse_checkbox.pack(side=ctk.LEFT, padx=10)
 
-    video_format_label = ttk.Label(root.frame_settings, text="Video Format:")
+    video_format_label = ctk.CTkLabel(
+        root.frame_settings, text="Video Format:", font=("", 12)
+    )
     video_format_label.pack(pady=(0, 0))
 
-    radio_frame = ttk.Frame(root.frame_settings)
+    radio_frame = ctk.CTkFrame(root.frame_settings, fg_color="transparent")
     radio_frame.pack(pady=(0, 10))
 
-    root.video_format_var = tk.StringVar(radio_frame, value="mp4")
-    root.radio_mp4 = ttk.Radiobutton(
+    root.video_format_var = ctk.StringVar(radio_frame, value="mp4")
+    root.radio_mp4 = ctk.CTkRadioButton(
         radio_frame, text="MP4", variable=root.video_format_var, value="mp4"
     )
-    root.radio_mp4.pack(side=tk.LEFT, padx=10, pady=0)
-    root.radio_gif = ttk.Radiobutton(
+    root.radio_mp4.pack(side=ctk.LEFT, padx=10, pady=0)
+    root.radio_gif = ctk.CTkRadioButton(
         radio_frame, text="GIF", variable=root.video_format_var, value="gif"
     )
-    root.radio_gif.pack(side=tk.LEFT, padx=10, pady=0)
+    root.radio_gif.pack(side=ctk.LEFT, padx=10, pady=0)
 
-    style = ttk.Style()
-    style.configure("Custom.TFrame", borderwidth=10, relief="groove")
-    frame_MP4_settings = ttk.Frame(root.frame_settings, style="Custom.TFrame")
+    frame_MP4_settings = ctk.CTkFrame(root.frame_settings, fg_color="transparent")
     frame_MP4_settings.pack(pady=(10, 10), padx=(0, 0))
 
-    fps_label = ttk.Label(frame_MP4_settings, text="Frames per Second (FPS):")
+    fps_label = ctk.CTkLabel(
+        frame_MP4_settings, text="Frames per Second (FPS):", font=("", 12)
+    )
     fps_label.pack()
-    root.fps_var = tk.IntVar(root, value=25)
-    root.fps_entry = ttk.Entry(frame_MP4_settings, textvariable=root.fps_var)
+    root.fps_var = ctk.IntVar(root, value=25)
+    root.fps_entry = ctk.CTkEntry(
+        frame_MP4_settings, textvariable=root.fps_var, justify="center"
+    )
     root.fps_entry.pack()
 
-    duration_label = ttk.Label(frame_MP4_settings, text="Duration (seconds):")
+    duration_label = ctk.CTkLabel(
+        frame_MP4_settings, text="Duration (seconds):", font=("", 12)
+    )
     duration_label.pack()
-    root.duration_var = tk.IntVar(root, value=3)
-    root.duration_entry = ttk.Entry(frame_MP4_settings, textvariable=root.duration_var)
+    root.duration_var = ctk.IntVar(root, value=3)
+    root.duration_entry = ctk.CTkEntry(
+        frame_MP4_settings, textvariable=root.duration_var, justify="center"
+    )
     root.duration_entry.pack()
 
-    video_size_label = ttk.Label(frame_MP4_settings, text="Video Size (w x h):")
+    video_size_label = ctk.CTkLabel(
+        frame_MP4_settings, text="Video Size (w x h):", font=("", 12)
+    )
     video_size_label.pack()
-    video_size_frame = ttk.Frame(frame_MP4_settings)
+    video_size_frame = ctk.CTkFrame(frame_MP4_settings, fg_color="transparent")
     video_size_frame.pack()
-    root.video_width_var = tk.IntVar(root, value=1920)
-    root.video_width_entry = ttk.Entry(
-        video_size_frame, textvariable=root.video_width_var, width=10
+    root.video_width_var = ctk.IntVar(root, value=1920)
+    root.video_width_entry = ctk.CTkEntry(
+        video_size_frame, textvariable=root.video_width_var, width=100, justify="center"
     )
-    root.video_width_entry.pack(side=tk.LEFT)
-    ttk.Label(video_size_frame, text="x").pack(side=tk.LEFT, padx=5)
-    root.video_height_var = tk.IntVar(root, value=1080)
-    root.video_height_entry = ttk.Entry(
-        video_size_frame, textvariable=root.video_height_var, width=10
+    root.video_width_entry.pack(side=ctk.LEFT)
+    ctk.CTkLabel(video_size_frame, text="x").pack(side=ctk.LEFT, padx=5)
+    root.video_height_var = ctk.IntVar(root, value=1080)
+    root.video_height_entry = ctk.CTkEntry(
+        video_size_frame,
+        textvariable=root.video_height_var,
+        width=100,
+        justify="center",
     )
-    root.video_height_entry.pack(side=tk.LEFT)
+    root.video_height_entry.pack(side=ctk.LEFT)
 
     ##################################################### OUTPUT #####################################################
 
-    ttk.Label(root, text="Output", font=("TkDefaultFont", 12, "bold")).pack(
-        pady=(20, 5)
-    )
-    ttk.Separator(root, orient="horizontal").pack(fill="x", pady=5)
+    ctk.CTkLabel(root, text="Output Settings", font=("", 14, "bold")).pack(pady=(20, 0))
 
-    root.frame_outputs = ttk.Frame(root)
+    root.frame_outputs = ctk.CTkFrame(root, fg_color="transparent")
     root.frame_outputs.pack(pady=(0, 10))
 
-    output_folder_label = ttk.Label(
-        root.frame_outputs, text="Select Image Sequence Folder:"
+    output_folder_label = ctk.CTkLabel(
+        root.frame_outputs, text="Select Image Sequence Folder:", font=("", 12)
     )
     output_folder_label.pack()
 
-    frame_image_folder = ttk.Frame(root.frame_outputs)
+    frame_image_folder = ctk.CTkFrame(root.frame_outputs)
     frame_image_folder.pack(pady=(0, 10))
 
-    root.output_folder_var = tk.StringVar(root)
-    root.output_folder_entry = ttk.Entry(
+    root.output_folder_var = ctk.StringVar(root)
+    root.output_folder_entry = ctk.CTkEntry(
         frame_image_folder,
         textvariable=root.output_folder_var,
-        width=75,
-        justify="center",
+        width=400,
+        justify="left",
     )
-    root.output_folder_entry.pack(side=tk.LEFT)
-    output_folder_button = ttk.Button(
-        frame_image_folder, text="Browse", command=root.select_output_folder
+    root.output_folder_entry.pack(side=ctk.LEFT)
+    output_folder_button = ctk.CTkButton(
+        frame_image_folder, text="Browse", width=80, command=root.select_output_folder
     )
-    output_folder_button.pack(side=tk.LEFT)
+    output_folder_button.pack(side=ctk.LEFT)
 
-    video_folder_label = ttk.Label(root.frame_outputs, text="Select Video Folder:")
+    video_folder_label = ctk.CTkLabel(
+        root.frame_outputs, text="Select Video Folder:", font=("", 12)
+    )
     video_folder_label.pack()
 
-    frame_video_folder = ttk.Frame(root.frame_outputs)
+    frame_video_folder = ctk.CTkFrame(root.frame_outputs)
     frame_video_folder.pack(pady=(0, 10))
 
-    root.video_folder_var = tk.StringVar(root)
-    root.video_folder_entry = ttk.Entry(
+    root.video_folder_var = ctk.StringVar(root)
+    root.video_folder_entry = ctk.CTkEntry(
         frame_video_folder,
         textvariable=root.video_folder_var,
-        width=75,
-        justify="center",
+        width=400,
+        justify="left",
     )
-    root.video_folder_entry.pack(side=tk.LEFT)
-    video_folder_button = ttk.Button(
-        frame_video_folder, text="Browse", command=root.select_video_folder
+    root.video_folder_entry.pack(side=ctk.LEFT)
+    video_folder_button = ctk.CTkButton(
+        frame_video_folder, text="Browse", width=80, command=root.select_video_folder
     )
-    video_folder_button.pack(side=tk.LEFT)
+    video_folder_button.pack(side=ctk.LEFT)
 
-    frame_render_buttons = ttk.Frame(root.frame_outputs)
+    frame_render_buttons = ctk.CTkFrame(root.frame_outputs, fg_color="transparent")
     frame_render_buttons.pack(pady=10)
 
-    root.render_button = ttk.Button(
+    root.render_button = ctk.CTkButton(
         frame_render_buttons, text="Render", command=root.render_animation
     )
-    root.render_button.pack(side=tk.LEFT, padx=10)
-    root.cancel_button = ttk.Button(
+    root.render_button.pack(side=ctk.LEFT, padx=10)
+    root.cancel_button = ctk.CTkButton(
         frame_render_buttons,
         text="Cancel",
         command=root.cancel_rendering,
         state="disabled",
     )
-    root.cancel_button.pack(side=tk.LEFT, padx=10)
+    root.cancel_button.pack(side=ctk.LEFT, padx=10)
 
-    root.frame_progress = ttk.Frame(root)
+    root.frame_progress = ctk.CTkFrame(root, fg_color="transparent")
     root.frame_progress.pack(pady=(0, 0))
 
-    root.progress = ttk.Progressbar(
-        root.frame_progress, orient="horizontal", length=200, mode="determinate"
+    root.progress = ctk.CTkProgressBar(
+        root.frame_progress, orientation="horizontal", width=200, mode="determinate"
     )
+    root.progress.set(0)
     root.progress.pack()
-    root.status_label = ttk.Label(
+    root.status_label = ctk.CTkLabel(
         root.frame_progress, text="Ready", font=("TkDefaultFont", 8), state="disabled"
     )
     root.status_label.pack(pady=(5, 20))
@@ -413,7 +523,7 @@ def disable_ui(root):
     disableChildren(root.frame_styles)
     disableChildren(root.frame_settings)
     disableChildren(root.frame_outputs)
-    root.render_button.config(state="disabled")
+    root.render_button.configure(state="disabled")
 
 
 def enable_ui(root):
@@ -421,4 +531,4 @@ def enable_ui(root):
     enableChildren(root.frame_styles)
     enableChildren(root.frame_settings)
     enableChildren(root.frame_outputs)
-    root.render_button.config(state="normal")
+    root.render_button.configure(state="normal")

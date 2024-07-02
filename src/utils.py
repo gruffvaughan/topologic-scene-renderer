@@ -1,5 +1,7 @@
 import os
+import tkinter as tk
 from tkinter import colorchooser
+import customtkinter as ctk
 
 
 def get_next_version(folder, filename_prefix, selected_animation):
@@ -25,10 +27,10 @@ def select_color(sample_box, color_rgb_label, color_hex_label, color_var):
         color_rgb = f"{int(color[0][0])}, {int(color[0][1])}, {int(color[0][2])}"
         color_hex = color[1]
         if color_rgb_label:
-            color_rgb_label.config(text=f"RGB: {color_rgb}")
+            color_rgb_label.configure(text=f"RGB: {color_rgb}")
         if color_hex_label:
-            color_hex_label.config(text=f"HEX: {color_hex}")
-        sample_box.config(bg=color_hex)
+            color_hex_label.configure(text=f"HEX: {color_hex}")
+        sample_box.configure(fg_color=color_hex)
         color_var.set(color_rgb)
 
 
@@ -39,21 +41,33 @@ def rgb_to_hex(rgb_color):
 
 def disableChildren(parent):
     for child in parent.winfo_children():
-        wtype = child.winfo_class()
-        if wtype not in ("Frame", "Labelframe", "TFrame", "TLabelframe"):
-            child.configure(state="disable")
-        else:
+        if isinstance(child, (ctk.CTkFrame)):
             disableChildren(child)
+        elif isinstance(child, ctk.CTkComboBox):
+            child.configure(state="readonly")
+            child._state = "disabled"
+            child._entry.configure(state="disabled")
+        elif isinstance(child, ctk.CTkOptionMenu):
+            child.configure(state="disabled")
+        else:
+            try:
+                child.configure(state="disabled")
+            except tk.TclError:
+                print(f"Cannot disable {child}")
 
 
 def enableChildren(parent):
     for child in parent.winfo_children():
-        wtype = child.winfo_class()
-        if wtype == "OptionMenu":
+        if isinstance(child, (ctk.CTkFrame)):
+            enableChildren(child)
+        elif isinstance(child, ctk.CTkComboBox):
             child.configure(state="readonly")
-        elif wtype == "TCombobox":
-            child.configure(state="readonly")
-        elif wtype not in ("Frame", "Labelframe", "TFrame", "TLabelframe"):
+            child._state = "normal"
+            child._entry.configure(state="normal")
+        elif isinstance(child, ctk.CTkOptionMenu):
             child.configure(state="normal")
         else:
-            enableChildren(child)
+            try:
+                child.configure(state="normal")
+            except tk.TclError:
+                print(f"Cannot enable {child}")
