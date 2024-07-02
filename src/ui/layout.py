@@ -13,7 +13,7 @@ def create_layout(root):
     frame_header = ttk.Frame(root)
     frame_header.pack(pady=(10, 10))
 
-    original_image = Image.open("project/src/ui/images/topologicpy-logo.png")
+    original_image = Image.open("src/ui/images/topologicpy-logo.png")
     resized_image = original_image.resize((80, 80))
     root.logo_image = ImageTk.PhotoImage(resized_image)
     root.logo_label = ttk.Label(frame_header, image=root.logo_image)

@@ -31,7 +31,7 @@ def save_preferences(root):
         "bg_color": root.bg_color_var.get(),
         "bg_opacity": root.bg_opacity_var.get(),
     }
-    with open("project/settings/preferences.json", "w") as file:
+    with open("settings/preferences.json", "w") as file:
         json.dump(preferences, file)
 
 
@@ -63,7 +63,7 @@ def load_preferences(root):
         "bg_opacity": 1.0,
     }
 
-    preferences_file = "project/settings/preferences.json"
+    preferences_file = "settings/preferences.json"
 
     if os.path.exists(preferences_file):
         with open(preferences_file, "r") as f:

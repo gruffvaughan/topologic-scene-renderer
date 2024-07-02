@@ -18,7 +18,7 @@ class MainWindow(tk.Tk):
         self.title("topologicpy Animation Renderer")
         self.geometry("740x1140")
 
-        favicon = Image.open("project/src/ui/images/icon.png")
+        favicon = Image.open("src/ui/images/icon.png")
         self.icon = ImageTk.PhotoImage(favicon)
         self.iconphoto(True, self.icon)
 
