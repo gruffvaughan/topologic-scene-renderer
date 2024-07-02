@@ -1,6 +1,6 @@
-# DRAFT topologicpy Animation Renderer
+# topologicpy Scene Renderer
 
-The topologicpy Animation Renderer is a python application that allows you to export animations using the [topologicpy](https://pypi.org/project/topologicpy/) library, an open-source python 3 implementation of [Topologic](https://topologic.app/) which is a powerful spatial modelling and analysis software library that revolutionizes the way you design architectural spaces, buildings, and artefacts. It provides a user-friendly interface for generating various geometric shapes, applying transformations, and exporting image sequences and video files.
+The topologicpy Scene Renderer is a python application that allows you to export animations using the [topologicpy](https://pypi.org/project/topologicpy/) library, an open-source python3 implementation of [Topologic](https://topologic.app/) which is a powerful spatial modelling and analysis software library that revolutionizes the way you design architectural spaces, buildings, and artefacts. It provides a user-friendly interface for generating various geometric shapes, applying transformations, and exporting image sequences and video files.
 
 ## Features
 
@@ -9,6 +9,7 @@ The topologicpy Animation Renderer is a python application that allows you to ex
 - Configure the colour and opacity of the scene background
 - Configure animation parameters (e.g., duration, frame rate, resolution)
 - Export image sequences as video files in different formats (e.g., MP4, GIF)
+- Renders will automatically version up when you re-render
 
 ## Quirks
 
@@ -25,16 +26,10 @@ The topologicpy Animation Renderer is a python application that allows you to ex
 1. Clone the repository:
 
 ```
-REPO_URL
+https://github.com/gruffvaughan/topologic-scene-renderer
 ```
 
-2. Navigate to the project directory:
-
-```
-cd PROJECT_DIR
-```
-
-3. Install the required dependencies:
+2. Install the required dependencies:
 
 ```
 pip install -r docs/requirements.txt
@@ -68,14 +63,10 @@ This project is licensed under the [MIT License](LICENSE).
 
 ## Acknowledgements
 
-The topologicpy Animation Renderer is built using the [topologicpy](https://pypi.org/project/topologicpy/) library.
+The topologicpy Scene Renderer is built on top of the [topologicpy](https://pypi.org/project/topologicpy/) library.
 
 ## Contact
 
 If you have any questions, suggestions, or feedback, please feel free to contact the developer:
 
-Gruff Vaughan
-
-[gruff@stormandshelter.com](gruff@stormandshelter.com)
-
-[github.com/gruffvaughan](https://github.com/gruffvaughan)
+Gruff Vaughan - [gruff@stormandshelter.com](gruff@stormandshelter.com) - [STORM+SHELTER](https://stormandshelter.com)

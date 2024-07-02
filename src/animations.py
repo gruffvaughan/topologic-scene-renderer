@@ -123,7 +123,6 @@ def cell_complex_animation(t):
 
 
 def explode_animation(t):
-    scale = t * 2.0
     c = CellComplex.Prism(
         origin=Vertex.Origin(),
         width=1,
@@ -139,12 +138,12 @@ def explode_animation(t):
     explode = Topology.Explode(
         c,
         origin=Vertex.Origin(),
-        scale=scale,
+        scale=0.5 + t,
         typeFilter=None,
         axes="xyz",
         tolerance=0.0001,
     )
-    return explode, Cell.Prism(width=2, length=2, height=3)
+    return explode, Cell.Prism(width=3, length=3, height=3)
 
 
 def torus_animation(t):
