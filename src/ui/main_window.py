@@ -1,8 +1,6 @@
 import threading
 
 import customtkinter as ctk
-import tkinter as tk
-from PIL import Image, ImageTk
 
 from src.animations import animation_functions
 from src.easing import easing_functions
@@ -153,11 +151,11 @@ class MainWindow(ctk.CTk):
 
         # Call render_frames with a callback to update_progress
         def update_progress(frame_number):
-            self.progress["value"] = (frame_number / total_frames) * 100
+            self.progress.set(frame_number / total_frames)
             self.update_idletasks()  # Make sure UI updates
             if self.cancel_render:
                 self.status_label.configure(text="Render cancelled.")
-                self.progress["value"] = 0
+                self.progress.set(0)
                 return False  # Indicate that rendering should be stopped
             self.status_label.configure(
                 text=f"Rendering frame {frame_number}/{total_frames}"
