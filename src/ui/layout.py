@@ -524,6 +524,7 @@ def disable_ui(root):
     disableChildren(root.frame_settings)
     disableChildren(root.frame_outputs)
     root.render_button.configure(state="disabled")
+    root.cancel_button.configure(state="normal")
 
 
 def enable_ui(root):
@@ -532,3 +533,4 @@ def enable_ui(root):
     enableChildren(root.frame_settings)
     enableChildren(root.frame_outputs)
     root.render_button.configure(state="normal")
+    root.cancel_button.configure(state="disabled")

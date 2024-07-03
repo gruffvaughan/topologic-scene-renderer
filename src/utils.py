@@ -39,35 +39,47 @@ def rgb_to_hex(rgb_color):
     return f"#{rgb_values[0]:02x}{rgb_values[1]:02x}{rgb_values[2]:02x}"
 
 
-def disableChildren(parent):
-    for child in parent.winfo_children():
-        if isinstance(child, (ctk.CTkFrame)):
-            disableChildren(child)
-        elif isinstance(child, ctk.CTkComboBox):
-            child.configure(state="readonly")
-            child._state = "disabled"
-            child._entry.configure(state="disabled")
-        elif isinstance(child, ctk.CTkOptionMenu):
-            child.configure(state="disabled")
+def _set_widget_state(widget, state):
+    try:
+        if isinstance(widget, ctk.CTkLabel):
+            # For labels, we'll change the text color instead of the state
+            text_color = "gray" if state == "disabled" else ("gray10", "gray90")
+            widget.configure(text_color=text_color)
+        elif isinstance(widget, ctk.CTkFrame):
+            # For frames, we need to recurse into their children
+            for child in widget.winfo_children():
+                _set_widget_state(child, state)
+        elif isinstance(widget, ctk.CTkComboBox):
+            if state == "disabled":
+                widget.configure(
+                    state="disabled",
+                    button_color="gray",
+                    button_hover_color="gray",
+                    border_color="gray",
+                    text_color="gray",
+                )
+            else:
+                widget.configure(
+                    state="normal",
+                    button_color=("gray75", "gray25"),  # default colors
+                    button_hover_color=("gray70", "gray30"),  # default colors
+                    border_color=("gray40", "gray60"),  # default colors
+                    text_color=("gray10", "gray90"),  # default colors
+                )
+        elif isinstance(widget, ctk.CTkEntry):
+            # For Entry widgets, we'll change both the state and the text color
+            text_color = "gray" if state == "disabled" else ("gray10", "gray90")
+            widget.configure(state=state, text_color=text_color)
         else:
-            try:
-                child.configure(state="disabled")
-            except tk.TclError:
-                print(f"Cannot disable {child}")
+            # For most widgets, we can simply set the state
+            widget.configure(state=state)
+    except Exception as e:
+        print(f"Cannot {'disable' if state == 'disabled' else 'enable'} {widget}: {e}")
+
+
+def disableChildren(parent):
+    _set_widget_state(parent, "disabled")
 
 
 def enableChildren(parent):
-    for child in parent.winfo_children():
-        if isinstance(child, (ctk.CTkFrame)):
-            enableChildren(child)
-        elif isinstance(child, ctk.CTkComboBox):
-            child.configure(state="readonly")
-            child._state = "normal"
-            child._entry.configure(state="normal")
-        elif isinstance(child, ctk.CTkOptionMenu):
-            child.configure(state="normal")
-        else:
-            try:
-                child.configure(state="normal")
-            except tk.TclError:
-                print(f"Cannot enable {child}")
+    _set_widget_state(parent, "normal")
