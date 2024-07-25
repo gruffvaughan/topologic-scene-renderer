@@ -27,11 +27,14 @@ https://github.com/gruffvaughan/topologic-scene-renderer
 pip install -r docs/requirements.txt
 ```
 
-⚠️ Ensure that you downgrade `kaleido` (required by Plotly) to version 0.1.0post1 otherwise the script [locks in an endless loop](https://github.com/plotly/Kaleido/issues/110)
+3. You'll need to downgrade `kaleido` (required by Plotly) to version 0.1.0post1 otherwise the script [locks in an endless loop](https://github.com/plotly/Kaleido/issues/110)
 
 ```
  pip install --upgrade "kaleido==0.1.*"
 ```
+
+4. Install [ffmpeg](https://www.ffmpeg.org/download.html) if it's not already on your machine
+
 
 ## Usage
 
